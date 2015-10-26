@@ -1,0 +1,155 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf130
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww13180\viewh13900\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\qc\partightenfactor0
+
+\b\fs48 \cf0 Spaceview Live
+\b0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\qc\partightenfactor0
+
+\i\fs36 \cf0 Enjoy the view!\
+
+\i0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs28 \cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+v.1.0 - 25.10.2015\
+\pard\pardeftab720\sl448\partightenfactor0
+\cf0 David Marzocca\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\i\b \cf0 Info\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\i0\b0 \cf0 \
+The DSCOVR (Deep Space Climate Observatory) satellite is in the Lagrange point L1, approximately 1.5 million Km from Earth.\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "http://www.nesdis.noaa.gov/DSCOVR/"}}{\fldrslt \cf0 http://www.nesdis.noaa.gov/DSCOVR/}}\
+From this position it always sees the sun-illuminated side of the Earth.\
+\
+High resolution photos from its EPIC (Earth Polychromatic Imaging Camera) camera are uploaded on {\field{\*\fldinst{HYPERLINK "http://epic.gsfc.nasa.gov/"}}{\fldrslt http://epic.gsfc.nasa.gov/}} every day, within 12 to 36 hours from the time they are taken. For each day there are about 10-14 photos, that is approximately one every two hours.\
+\
+This script downloads the photo from ~48h ago closest in time to the present time of the day, and puts it in the /photos/ folder.\
+This can be used to create a desktop wallpaper which auto-updates with these photos:\
+an awesome Earth-looking window from a great vantage point in space.\
+It can also be used to create an awesome screen-saver.\
+\pard\pardeftab720\sl448\partightenfactor0
+\cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\i\b \cf0 Dependencies\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\i0\b0 \cf0 \
+The script needs:\
+- Python (tested on v.2.7)\
+- crone\
+\
+Both should come by default in all Unix systems (Linux and Mac).\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\i\b \cf0 Instructions for Mac
+\i0\b0 \
+\
+Once the SpaceviewLive folder is copied somewhere on your mac:\
+\
+1- Double click on install.command.\
+\
+   A folder /photos/ is created and the photos are downloaded inside.\
+   Every 30 minutes the script will check for an update on the DSCOVR website.\
+\
+2- With MacOSX, in order to put these pictures as wallpaper and make it refresh automatically:\
+	- Open \'91System Preferences\'92\
+	- Click on \'91Desktop & Screen Saver\'92\
+	- Click on the \'91Desktop\'92 tab\
+	- Click on the \'91+\'92 on the left-hand side and add the /photos/ folder\
+	- Select the checkbox \'91Change picture\'92 and select 15 minutes (or lower)\
+	- Select \'91Adapt to Screen\'92 and change the background color to black.\
+	- You can select \'91Random order\'92, it works independently of this.\
+	- In a very similar way you can create an awesome screen saver!\
+\
+3- Enjoy the view!\
+\
+\
+Note: The reason why there are always two identical photos in the /photos/ folder is because if there was only one photo with always the same filename, MacOS does not refresh it.\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+
+\i\b Instructions for other systems
+\i0\b0 \
+\
+1- Put the files DSCOVR.py and install_shell.sh in a folder.\
+\
+2- Access that folder with the terminal and run the shell script with:\
+./install_shell.sh\
+   A folder /photos/ is created and the photos are downloaded inside.\
+   Every 30 minutes the script will check for an update on the DSCOVR website.\
+\
+3- From the terminal, the list of active crone jobs can be checked with:\
+crontab -l\
+\
+4- Select the /photos/ folder in your wallpaper preferences (the precise way depends on the system).\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+
+\i\b Uninstall
+\i0\b0 \
+\
+Simply cancel all the files contained in the package.\
+\
+To remove the automatic download open crone and cancel the line with the job.\
+	- A good way to do this is write this in a terminal window:\
+	env EDITOR=nano crontab -e\
+	- Cancel the job\
+	- Save the file by pressing Control + O, then Enter to accept\
+	- Exit nano by pressing Control + X \
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+
+\i\b Contact
+\i0\b0 \
+\
+For info or suggestions send an email to:\
+david.marzocca@gmail.com\
+\
+\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\pard\pardeftab720\sl448\partightenfactor0
+\cf0 Copyright (c) 2015 David Marzocca\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \
+MIT License\
+{\field{\*\fldinst{HYPERLINK "http://opensource.org/licenses/MIT"}}{\fldrslt http://opensource.org/licenses/MIT}}\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+Permission is hereby granted, free of charge, to any person obtaining a copy\
+of this software and associated documentation files (the "Software"), to deal\
+in the Software without restriction, including without limitation the rights\
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\
+copies of the Software, and to permit persons to whom the Software is\
+furnished to do so, subject to the following conditions:\
+\
+The above copyright notice and this permission notice shall be included in\
+all copies or substantial portions of the Software.\
+\
+\pard\pardeftab720\sl448\partightenfactor0
+\cf0 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\
+THE SOFTWARE.\
+}
