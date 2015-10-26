@@ -4,6 +4,7 @@
 
 Auto-updating photos of the Earth from 1.5 million Km away for your desktop wallpaper or screen saver.
 
+![alt tag](https://raw.github.com/DavidMarzocca/SpaceviewLive/master/DSCOVR%20Wallpaper%20Example.png)
 
 Introduction
 --------------
