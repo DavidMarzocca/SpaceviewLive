@@ -36,7 +36,7 @@ From this position it always sees the sun-illuminated side of the Earth.\
 \
 High resolution photos from its EPIC (Earth Polychromatic Imaging Camera) camera are uploaded on {\field{\*\fldinst{HYPERLINK "http://epic.gsfc.nasa.gov/"}}{\fldrslt http://epic.gsfc.nasa.gov/}} every day, within 12 to 36 hours from the time they are taken. For each day there are about 10-14 photos, that is approximately one every two hours.\
 \
-This script downloads the photo from ~48h ago closest in time to the present time of the day, and puts it in the /photos/ folder.\
+This script downloads the photo from ~48h ago closest in time to the present time of the day, and puts it in the /photos/ folder (within the folder where the script is installed).\
 This can be used to create a desktop wallpaper which auto-updates with these photos:\
 an awesome Earth-looking window from a great vantage point in space.\
 It can also be used to create an awesome screen-saver.\
@@ -66,7 +66,7 @@ Once the SpaceviewLive folder is copied somewhere on your mac:\
 \
 1- Double click on install.command.\
 \
-   A folder /photos/ is created and the photos are downloaded inside.\
+   A folder /photos/ is created (within the folder where the script is installed) and the photos are downloaded inside.\
    Every 30 minutes the script will check for an update on the DSCOVR website.\
 \
 2- With MacOSX, in order to put these pictures as wallpaper and make it refresh automatically:\
@@ -93,7 +93,7 @@ Note: The reason why there are always two identical photos in the /photos/ folde
 \
 2- Access that folder with the terminal and run the shell script with:\
 ./install_shell.sh\
-   A folder /photos/ is created and the photos are downloaded inside.\
+   A folder /photos/ is created (within the folder where the script is installed) and the photos are downloaded inside.\
    Every 30 minutes the script will check for an update on the DSCOVR website.\
 \
 3- From the terminal, the list of active crone jobs can be checked with:\
