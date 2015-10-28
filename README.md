@@ -15,7 +15,7 @@ From this position it always sees the sun-illuminated side of the Earth.
 
 High resolution photos from its EPIC (Earth Polychromatic Imaging Camera) camera are uploaded on http://epic.gsfc.nasa.gov/ every day, within 12 to 36 hours from the time they are taken. For each day there are about 10-14 photos: approximately one every two hours.
 
-This script downloads the photo from ~48h ago, with the closest time to the present time of the day, and puts it in the /photos/ folder.
+This script downloads the photo from ~48h ago, with the closest time to the present time of the day, and puts it in the /photos/ folder (inside the folder where the script is installed).
 This can be used to create a desktop wallpaper which auto-updates with these photos:
 an awesome Earth-looking window from a great vantage point in space.
 It can also be used to create an awesome screen-saver.
@@ -35,7 +35,7 @@ Instructions for Mac
 Once the SpaceviewLive folder is copied somewhere on your mac:
 
 0. Double click on install.command.
-   A folder /photos/ is created and the photos are downloaded inside.
+   A folder /photos/ is created (inside the folder where the script is installed) and the photos are downloaded inside.
    Every 30 minutes the script will check for an update on the DSCOVR website.
 
 0. With MacOSX, in order to put these pictures as wallpaper and make it refresh automatically:
@@ -62,7 +62,7 @@ Instructions for other systems
    ```
    ./install_shell.sh
    ```
-   A folder /photos/ is created and the photos are downloaded inside.
+   A folder /photos/ is created (inside the folder where the script is installed) and the photos are downloaded inside.
    Every 30 minutes the script will check for an update on the DSCOVR website.
 
 0. From the terminal, the list of active crone jobs can be checked with the command `crontab -l`
@@ -75,8 +75,8 @@ Uninstall
 0. Cancel all the files contained in the package.
 
 0. To remove the automatic download open crone and cancel the line with the job.
-	A good way to do this is write this in a terminal window:
-	 ```
+    A good way to do this is write this in a terminal window:
+    ```
    env EDITOR=nano crontab -e
    ```
 	Cancel the job save the file by pressing Control + O, then Enter to accept and finally exit nano by pressing Control + X.
