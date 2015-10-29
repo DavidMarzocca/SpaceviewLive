@@ -15,7 +15,8 @@ From this position it always sees the sun-illuminated side of the Earth.
 
 High resolution photos from its EPIC (Earth Polychromatic Imaging Camera) camera are uploaded on http://epic.gsfc.nasa.gov/ every day, within 12 to 36 hours from the time they are taken. For each day there are about 10-14 photos: approximately one every two hours.
 
-This script downloads the photo from ~48h ago, with the closest time to the present time of the day, and puts it in the /photos/ folder (inside the folder where the script is installed).
+This script downloads the photo with the closest time to the present time of the day (within 2 hours), starting from the present day and going backwards until such a photo is found.
+The photo is saved in the /photos/ folder (within the folder where the script is installed).
 This can be used to create a desktop wallpaper which auto-updates with these photos:
 an awesome Earth-looking window from a great vantage point in space.
 It can also be used to create an awesome screen-saver.
@@ -35,7 +36,7 @@ Instructions for Mac
 Once the SpaceviewLive folder is copied somewhere on your mac:
 
 0. Double click on install.command.
-   A folder /photos/ is created (inside the folder where the script is installed) and the photos are downloaded inside.
+   A folder /photos/ is created (within the folder where the script is installed) and the photos are downloaded inside.
    Every 30 minutes the script will check for an update on the DSCOVR website.
 
 0. With MacOSX, in order to put these pictures as wallpaper and make it refresh automatically:
@@ -53,7 +54,7 @@ Once the SpaceviewLive folder is copied somewhere on your mac:
 
 *Note:* There are two identical photos in the /photos/ folder in order to force MacOS X to refresh them correctly.
 
-Instructions for other systems
+Instructions for any Unix system
 -----------
 
 0. Put the files DSCOVR.py and install_shell.sh in a folder.
@@ -62,7 +63,7 @@ Instructions for other systems
    ```
    ./install_shell.sh
    ```
-   A folder /photos/ is created (inside the folder where the script is installed) and the photos are downloaded inside.
+   A folder /photos/ is created (within the folder where the script is installed) and the photos are downloaded inside.
    Every 30 minutes the script will check for an update on the DSCOVR website.
 
 0. From the terminal, the list of active crone jobs can be checked with the command `crontab -l`
