@@ -47,6 +47,8 @@ def download_photo(img_url, filename):
 
 today = datetime.datetime.utcnow()
 
+found_photo = 0
+
 # Starting from today, it will go back in time day by day (up to 1 month)
 # until it finds a photo with the time within 2 hours of the present time.
 # This allows to avoid some breaks which happen when the satellite does not upload new photos.
@@ -95,24 +97,47 @@ for deltaDay in range(0, 30):
 	
 	# I want the photo to be within 2 hours of the present time, otherwise I search for a previous day
 	if min(rel_photo_timestamp) < 2 * 3600:
+		found_photo = 1
 		break
-
 
 # End of the For loop.
 
-# This is the datecode of the photo I will download
-datecode = photo_datecode[min_deltat_index]
+
+# Open the log.txt file
+log_file = open('log.txt', 'a')
+
+to_print = '- The script run on ' + today.strftime("%Y-%m-%d %H:%M:%S") + ' GMT.'
+print >> log_file, to_print
 
 
-baseurl = 'http://epic.gsfc.nasa.gov/epic-archive/png/epic_1b_'
-endurl = '_00.png'
-photourl = baseurl + datecode + endurl
+# If it found a photo it will download it and print the date tag on the log file
+if found_photo == 1:
+	# This is the datecode of the photo I will download
+	datecode = photo_datecode[min_deltat_index]
+	photo_datetime = datetime.datetime(int(datecode[0:4]), int(datecode[4:6]), int(datecode[6:8]), int(datecode[8:10]), int(datecode[10:12]), int(datecode[12:14]))
 
-# It downloads the photo
-download_photo(photourl, downloaded_photoname)
+	baseurl = 'http://epic.gsfc.nasa.gov/epic-archive/png/epic_1b_'
+	endurl = '_00.png'
+	photourl = baseurl + datecode + endurl
 
-# It makes a second copy. This is only needed for MacOSX in order to correctly refresh the wallpaper
-shutil.copy2(DOWNLOADED_IMAGE_PATH + downloaded_photoname, DOWNLOADED_IMAGE_PATH + downloaded_photoname_2)
+	# It downloads the photo
+	download_photo(photourl, downloaded_photoname)
+
+	# It makes a second copy. This is only needed for MacOSX in order to correctly refresh the wallpaper
+	shutil.copy2(DOWNLOADED_IMAGE_PATH + downloaded_photoname, DOWNLOADED_IMAGE_PATH + downloaded_photoname_2)
+	
+	to_print = '   The downloaded photo was taken on ' + photo_datetime.strftime("%Y-%m-%d %H:%M:%S") + ' GMT.'
+	print >> log_file, to_print
+	
+# Otherwise, if it didn't find it, it will write this to the log file
+else:
+	print >> log_file, '   No new photo was downloaded'
+
+print >> log_file, ''
+	
+	
+# Closes the log file
+log_file.close()
 
 # The End
 raise SystemExit()

@@ -36,7 +36,8 @@ From this position it always sees the sun-illuminated side of the Earth.\
 \
 High resolution photos from its EPIC (Earth Polychromatic Imaging Camera) camera are uploaded on {\field{\*\fldinst{HYPERLINK "http://epic.gsfc.nasa.gov/"}}{\fldrslt http://epic.gsfc.nasa.gov/}} every day, within 12 to 36 hours from the time they are taken. For each day there are about 10-14 photos, that is approximately one every two hours.\
 \
-This script downloads the photo from ~48h ago closest in time to the present time of the day, and puts it in the /photos/ folder (within the folder where the script is installed).\
+This script downloads the photo with the closest time to the present time of the day (within 2 hours), starting from the present day and going backwards until such a photo is found.\
+The photo is saved in the /photos/ folder (within the folder where the script is installed).\
 This can be used to create a desktop wallpaper which auto-updates with these photos:\
 an awesome Earth-looking window from a great vantage point in space.\
 It can also be used to create an awesome screen-saver.\
@@ -86,7 +87,7 @@ Note: The reason why there are always two identical photos in the /photos/ folde
 \
 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
 
-\i\b Instructions for other systems
+\i\b Instructions for any Unix system
 \i0\b0 \
 \
 1- Put the files DSCOVR.py and install_shell.sh in a folder.\
