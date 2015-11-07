@@ -7,25 +7,16 @@
 #
 # *******************************************************************************
 
+
+# ************** Libraries and definitions *******************
+
 import urllib
 import os
 import datetime
 import re
 import calendar
 import shutil
-
-# Current working directory
-CurrWorkDir = os.getcwd()
-
-# Define the path of where the photos are going to be and their names
-DOWNLOADED_IMAGE_PATH = CurrWorkDir + '/photos/'
-downloaded_photoname = 'DSCOVR.png'
-downloaded_photoname_2 = 'DSCOVR2.png'
-
-# If the folder 'photos' does not exist, it is created
-if not os.path.exists(DOWNLOADED_IMAGE_PATH):
-        os.makedirs(DOWNLOADED_IMAGE_PATH)
-
+from itertools import islice
 
 # this function checkes if the url contains an image and, if yes, downloads it
 def download_photo(img_url, filename):
@@ -44,6 +35,37 @@ def download_photo(img_url, filename):
     except:
         return False
     return True
+
+# This function adds a line to the beginning of a file, keeping a max of 100 lines
+# If there is no file it creates it.
+def write_on_log(filename, line):
+	if os.path.exists(filename):
+		with open(filename, 'r+') as f:
+			content = list(islice(f, 99))
+			f.seek(0, 0)
+			f.write(line.rstrip('\r\n') + '\n')
+			for oldline in content:
+				f.write(oldline)
+			f.close()
+	else:
+		with open(filename, 'w') as f:
+			f.write(line)
+			f.close()
+
+# ************** Beginning of the script *******************
+
+# Current working directory
+CurrWorkDir = os.getcwd()
+
+# Define the path of where the photos are going to be and their names
+DOWNLOADED_IMAGE_PATH = CurrWorkDir + '/photos/'
+downloaded_photoname = 'DSCOVR.png'
+downloaded_photoname_2 = 'DSCOVR2.png'
+
+# If the folder 'photos' does not exist, it is created
+if not os.path.exists(DOWNLOADED_IMAGE_PATH):
+        os.makedirs(DOWNLOADED_IMAGE_PATH)
+
 
 today = datetime.datetime.utcnow()
 
@@ -103,12 +125,8 @@ for deltaDay in range(0, 30):
 # End of the For loop.
 
 
-# Open the log.txt file
-log_file = open('log.txt', 'a')
 
-to_print = '- The script run on ' + today.strftime("%Y-%m-%d %H:%M:%S") + ' GMT.'
-print >> log_file, to_print
-
+to_print_1 = 'Script time = ' + today.strftime("%Y-%m-%d %H:%M:%S") + ' GMT.'
 
 # If it found a photo it will download it and print the date tag on the log file
 if found_photo == 1:
@@ -126,18 +144,16 @@ if found_photo == 1:
 	# It makes a second copy. This is only needed for MacOSX in order to correctly refresh the wallpaper
 	shutil.copy2(DOWNLOADED_IMAGE_PATH + downloaded_photoname, DOWNLOADED_IMAGE_PATH + downloaded_photoname_2)
 	
-	to_print = '   The downloaded photo was taken on ' + photo_datetime.strftime("%Y-%m-%d %H:%M:%S") + ' GMT.'
-	print >> log_file, to_print
+	to_print_2 = ' Photo time = ' + photo_datetime.strftime("%Y-%m-%d %H:%M:%S") + ' GMT.'
 	
 # Otherwise, if it didn't find it, it will write this to the log file
 else:
-	print >> log_file, '   No new photo was downloaded'
+	to_print_2 = ' No new photo was downloaded.'
 
-print >> log_file, ''
-	
-	
-# Closes the log file
-log_file.close()
+
+# Write on the log.txt file
+write_on_log('log.txt', to_print_1 + to_print_2)
+
 
 # The End
 raise SystemExit()
