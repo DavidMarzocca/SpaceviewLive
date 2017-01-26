@@ -31,10 +31,10 @@ def download_photo(img_url, filename):
             downloaded_image.close()
             image_on_web.close()
         else:
-            return False    
+            return 0    
     except:
-        return False
-    return True
+        return 0
+    return 1
 
 # This function adds a line to the beginning of a file, keeping a max of 100 lines
 # If there is no file it creates it.
@@ -139,12 +139,26 @@ if found_photo == 1:
 	photourl = baseurl + datecode + endurl
 
 	# It downloads the photo
-	download_photo(photourl, downloaded_photoname)
+	download_check = download_photo(photourl, downloaded_photoname)
 
-	# It makes a second copy. This is only needed for MacOSX in order to correctly refresh the wallpaper
-	shutil.copy2(DOWNLOADED_IMAGE_PATH + downloaded_photoname, DOWNLOADED_IMAGE_PATH + downloaded_photoname_2)
+	if download_check == 0:
+		# sometimes the photo filename ends by 00 and other times by 01, this checks both cases
+		endurl = '_00.png'
+		photourl = baseurl + datecode + endurl
+		
+		# It downloads the photo
+		download_check = download_photo(photourl, downloaded_photoname)
+		
+
+	if 	download_check == 1:
+		# It makes a second copy. This is only needed for MacOSX in order to correctly refresh the wallpaper
+		shutil.copy2(DOWNLOADED_IMAGE_PATH + downloaded_photoname, DOWNLOADED_IMAGE_PATH + downloaded_photoname_2)
 	
-	to_print_2 = ' Photo time = ' + photo_datetime.strftime("%Y-%m-%d %H:%M:%S") + ' GMT.'
+		to_print_2 = ' Photo time = ' + photo_datetime.strftime("%Y-%m-%d %H:%M:%S") + ' GMT.'
+
+	# this is in case it didn't manage to download a file
+	else:
+		to_print_2 = ' No new photo was downloaded.'
 	
 # Otherwise, if it didn't find it, it will write this to the log file
 else:
