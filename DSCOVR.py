@@ -150,15 +150,15 @@ if found_photo == 1:
 		download_check = download_photo(photourl, downloaded_photoname)
 		
 
-	if 	download_check == 1:
+	if download_check == 1:
 		# It makes a second copy. This is only needed for MacOSX in order to correctly refresh the wallpaper
 		shutil.copy2(DOWNLOADED_IMAGE_PATH + downloaded_photoname, DOWNLOADED_IMAGE_PATH + downloaded_photoname_2)
 	
-		to_print_2 = ' Photo time = ' + photo_datetime.strftime("%Y-%m-%d %H:%M:%S") + ' GMT.'
+		to_print_2 = ' Photo time = ' + photo_datetime.strftime("%Y-%m-%d %H:%M:%S") + ' GMT. URL: ' + photourl
 
 	# this is in case it didn't manage to download a file
-	else:
-		to_print_2 = ' Photo time = ' + photo_datetime.strftime("%Y-%m-%d %H:%M:%S") + ' GMT.'+ ' ERROR: not downloaded.'
+	if download_check == 0:
+		to_print_2 = ' Photo time = ' + photo_datetime.strftime("%Y-%m-%d %H:%M:%S") + ' GMT.' + ' ERROR: not downloaded.'
 	
 # Otherwise, if it didn't find it, it will write this to the log file
 else:
