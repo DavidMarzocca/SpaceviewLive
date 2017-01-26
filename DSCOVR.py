@@ -135,7 +135,7 @@ if found_photo == 1:
 	photo_datetime = datetime.datetime(int(datecode[0:4]), int(datecode[4:6]), int(datecode[6:8]), int(datecode[8:10]), int(datecode[10:12]), int(datecode[12:14]))
 
 	baseurl = 'http://epic.gsfc.nasa.gov/epic-archive/png/epic_1b_'
-	endurl = '_00.png'
+	endurl = '_01.png'
 	photourl = baseurl + datecode + endurl
 
 	# It downloads the photo
@@ -158,11 +158,11 @@ if found_photo == 1:
 
 	# this is in case it didn't manage to download a file
 	else:
-		to_print_2 = ' No new photo was downloaded.'
+		to_print_2 = ' Photo time = ' + photo_datetime.strftime("%Y-%m-%d %H:%M:%S") + ' GMT.'+ ' ERROR: not downloaded.'
 	
 # Otherwise, if it didn't find it, it will write this to the log file
 else:
-	to_print_2 = ' No new photo was downloaded.'
+	to_print_2 = ' No photo was found.'
 
 
 # Write on the log.txt file
