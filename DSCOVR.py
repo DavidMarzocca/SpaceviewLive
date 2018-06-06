@@ -135,19 +135,22 @@ if found_photo == 1:
 	photo_datetime = datetime.datetime(int(datecode[0:4]), int(datecode[4:6]), int(datecode[6:8]), int(datecode[8:10]), int(datecode[10:12]), int(datecode[12:14]))
 
 	baseurl = 'http://epic.gsfc.nasa.gov/epic-archive/png/epic_1b_'
-	endurl = '_01.png'
+	#endurl = '_01.png'  
+	# From BenJuan26: The script does not work in its current form because EPIC images no longer end in _00 or _01.
+	# Removing that logic allows the script to succeed.
+	endurl = '.png'
 	photourl = baseurl + datecode + endurl
 
 	# It downloads the photo
 	download_check = download_photo(photourl, downloaded_photoname)
 
-	if download_check == 0:
+	#if download_check == 0:
 		# sometimes the photo filename ends by 00 and other times by 01, this checks both cases
-		endurl = '_00.png'
-		photourl = baseurl + datecode + endurl
+	#	endurl = '_00.png'
+	#	photourl = baseurl + datecode + endurl
 		
 		# It downloads the photo
-		download_check = download_photo(photourl, downloaded_photoname)
+	#	download_check = download_photo(photourl, downloaded_photoname)
 		
 
 	if download_check == 1:
