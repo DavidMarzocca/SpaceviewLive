@@ -10,31 +10,12 @@
 
 # ************** Libraries and definitions *******************
 
-import urllib
 import os
+import requests
 import datetime
-import re
-import calendar
 import shutil
+import json
 from itertools import islice
-
-# this function checkes if the url contains an image and, if yes, downloads it
-def download_photo(img_url, filename):
-    try:
-        image_on_web = urllib.urlopen(img_url)
-        if image_on_web.headers.maintype == 'image':
-            buf = image_on_web.read()
-            path = DOWNLOADED_IMAGE_PATH
-            file_path = "%s%s" % (path, filename)
-            downloaded_image = file(file_path, "wb")
-            downloaded_image.write(buf)
-            downloaded_image.close()
-            image_on_web.close()
-        else:
-            return 0    
-    except:
-        return 0
-    return 1
 
 # This function adds a line to the beginning of a file, keeping a max of 100 lines
 # If there is no file it creates it.
@@ -52,125 +33,107 @@ def write_on_log(filename, line):
 			f.write(line)
 			f.close()
 
+
+
 # ************** Beginning of the script *******************
 
-# Current working directory
-CurrWorkDir = os.getcwd()
 
 # Define the path of where the photos are going to be and their names
-DOWNLOADED_IMAGE_PATH = CurrWorkDir + '/photos/'
-downloaded_photoname = 'DSCOVR.png'
-downloaded_photoname_2 = 'DSCOVR2.png'
+download_dir = 'photos'
+if not os.path.exists(download_dir):
+    os.makedirs(download_dir)
 
-# If the folder 'photos' does not exist, it is created
-if not os.path.exists(DOWNLOADED_IMAGE_PATH):
-        os.makedirs(DOWNLOADED_IMAGE_PATH)
+found_photo = False
+max_days_back = 5
+now = datetime.datetime.utcnow()
 
+for delta_days in range(max_days_back):
+    # Starting from today, it will go back in time day by day (up to 100 days)
+    # until it finds a photo with the time within 2 hours of the present time.
+    # This allows to avoid some breaks which happen when the satellite does not upload new photos.
+    photo_date = now - datetime.timedelta(days=delta_days)
+    photo_date_str = photo_date.strftime('%Y%m%d')
 
-today = datetime.datetime.utcnow()
+    # I open the archive webpage and download it in a buffer
+    # This archive contains metadata for all photos taken in a given day
+    url_archive = f'https://epic.gsfc.nasa.gov/api/natural/date/{photo_date_str}'
+    # print(url_archive)
+    
+    try:
+        archive_response = requests.get(url_archive)
+        archive_response.raise_for_status()
+        metadata = archive_response.json()
+        
+    except requests.exceptions.HTTPError:
+        continue
 
-found_photo = 0
+    # If in that day there are no photos it skips to the previous day
+    if len(metadata) == 0:
+        continue
 
-# Starting from today, it will go back in time day by day (up to 1 month)
-# until it finds a photo with the time within 2 hours of the present time.
-# This allows to avoid some breaks which happen when the satellite does not upload new photos.
-for deltaDay in range(0, 30):
+    # Find the closest photo to now, within 2 hours.
+    min_deltat = datetime.timedelta.max
+    
+    for photo in metadata:
 
-	delta_day = datetime.timedelta(days=deltaDay)
-	photo_day = today - delta_day
+        # Extract hour, minute, and second information from photo timestamp
+        photo_time = datetime.datetime.fromisoformat(photo['date']).time()
+        
+        # Convert photo_time and current time to datetime objects
+        current_datetime = datetime.datetime.now()
+        photo_datetime = datetime.datetime.combine(current_datetime.date(), photo_time)
 
-	datetag = str(photo_day.year) + str(photo_day.month).zfill(2) + str(photo_day.day).zfill(2)
+        # Calculate the time difference between the current time and photo time
+        delta_t = abs(current_datetime - photo_datetime)
 
-	# I open the archive webpage and download it in a buffer
-	# This archive contains metadata for all photos taken in a given day
+        if delta_t < min_deltat:
+            min_deltat = delta_t
+            closest_photo = photo
 
-	urlarchive = 'http://epic.gsfc.nasa.gov/api/images.php?date='
+    # I want the photo to be within 2 hours of the present time, otherwise I search for a previous day
+    if min_deltat > datetime.timedelta(hours=2):
+        continue
 
-	archive_response = urllib.urlopen(urlarchive + datetag)
+    found_photo = True
+    closest_photo_str = json.dumps(closest_photo)
 
-	buf_archive = archive_response.read()
-
-	# Now with a regular expression I extract the positions of the photos filenames
-	list_index_filename = [m.start() for m in re.finditer('epic_1b_', buf_archive)]
-	
-	# If in that day there are no photos it skips to the previous day
-	if len(list_index_filename) == 0:
-		continue
-	
-	# From these positions I get the datecode of each photo: yyyymmddhhmmss
-	photo_datecode = []
-	for ii in list_index_filename:
-		photo_datecode.append(buf_archive[ii + 8: ii + 22])
-
-	# I close the webpage
-	archive_response.close()
-
-	# this is the timestamp of the time I'm looking the photo for: time in seconds from a given date
-	timestamp_photo_day = (photo_day - datetime.datetime(1970, 1, 1)).total_seconds()
-
-	# I create a list of timestamps from the date codes in the web archive
-	rel_photo_timestamp = []
-	for datecode in photo_datecode:
-		date_time = datetime.datetime(int(datecode[0:4]), int(datecode[4:6]), int(datecode[6:8]), int(datecode[8:10]), int(datecode[10:12]), int(datecode[12:14]))
-		rel_photo_timestamp.append( abs((date_time - datetime.datetime(1970, 1, 1)).total_seconds() - timestamp_photo_day ))
-	
-	# I find the instance in the list closer in time with the present time
-	min_deltat_index = rel_photo_timestamp.index(min(rel_photo_timestamp))
-	
-	# I want the photo to be within 2 hours of the present time, otherwise I search for a previous day
-	if min(rel_photo_timestamp) < 2 * 3600:
-		found_photo = 1
-		break
-
-# End of the For loop.
-
-
-
-to_print_1 = 'Script time = ' + today.strftime("%Y-%m-%d %H:%M:%S") + ' GMT.'
+    
+    print('I found a photo')
+    
+    break
 
 # If it found a photo it will download it and print the date tag on the log file
-if found_photo == 1:
-	# This is the datecode of the photo I will download
-	datecode = photo_datecode[min_deltat_index]
-	photo_datetime = datetime.datetime(int(datecode[0:4]), int(datecode[4:6]), int(datecode[6:8]), int(datecode[8:10]), int(datecode[10:12]), int(datecode[12:14]))
+if found_photo:
+    
+    # Download the photo and save it in the download directory
+    timestamp = closest_photo_str[16:30]
+    photo_url = f'http://epic.gsfc.nasa.gov/epic-archive/png/epic_1b_{timestamp}.png'
+    
+    #photo_filename = os.path.join(download_dir, os.path.basename(photo_url))
+    photo_filename = os.path.join(download_dir, 'DSCOVR.png')
+    response = requests.get(photo_url, stream=True)
+    
+    with open(photo_filename, 'wb') as out_file:
+        shutil.copyfileobj(response.raw, out_file)
+    del response
+    
+    # Create a copy of the downloaded photo with a different filename
+    copy_filename = os.path.join(download_dir, 'DSCOVR2.png')
+    shutil.copy(photo_filename, copy_filename)
 
-	baseurl = 'http://epic.gsfc.nasa.gov/epic-archive/png/epic_1b_'
-	#endurl = '_01.png'  
-	# From BenJuan26: The script does not work in its current form because EPIC images no longer end in _00 or _01.
-	# Removing that logic allows the script to succeed.
-	endurl = '.png'
-	photourl = baseurl + datecode + endurl
 
-	# It downloads the photo
-	download_check = download_photo(photourl, downloaded_photoname)
-
-	#if download_check == 0:
-		# sometimes the photo filename ends by 00 and other times by 01, this checks both cases
-	#	endurl = '_00.png'
-	#	photourl = baseurl + datecode + endurl
-		
-		# It downloads the photo
-	#	download_check = download_photo(photourl, downloaded_photoname)
-		
-
-	if download_check == 1:
-		# It makes a second copy. This is only needed for MacOSX in order to correctly refresh the wallpaper
-		shutil.copy2(DOWNLOADED_IMAGE_PATH + downloaded_photoname, DOWNLOADED_IMAGE_PATH + downloaded_photoname_2)
-	
-		to_print_2 = ' Photo time = ' + photo_datetime.strftime("%Y-%m-%d %H:%M:%S") + ' GMT. URL: ' + photourl
-
-	# this is in case it didn't manage to download a file
-	if download_check == 0:
-		to_print_2 = ' Photo time = ' + photo_datetime.strftime("%Y-%m-%d %H:%M:%S") + ' GMT.' + ' ERROR: not downloaded.'
-	
-# Otherwise, if it didn't find it, it will write this to the log file
+    to_print = 'Script time = ' + now.strftime("%Y-%m-%d %H:%M:%S") + ' GMT. Photo time = ' + closest_photo['date'] + '. URL: ' + photo_url
+    
+        
 else:
-	to_print_2 = ' No photo was found.'
+	to_print = 'No photo found within the last 100 days.'
+	print('No photo found within the last 100 days.')
 
+    
+print(to_print)
 
 # Write on the log.txt file
-write_on_log('log.txt', to_print_1 + to_print_2)
-
+write_on_log('log.txt', to_print)
 
 # The End
 raise SystemExit()
