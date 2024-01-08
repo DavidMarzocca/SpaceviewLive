@@ -107,7 +107,9 @@ if found_photo:
     
     # Download the photo and save it in the download directory
     timestamp = closest_photo_str[16:30]
-    photo_url = f'http://epic.gsfc.nasa.gov/epic-archive/png/epic_1b_{timestamp}.png'
+    # 08/01/24 update: this is the new photo address form:
+    photo_url = f'https://epic.gsfc.nasa.gov/archive/natural/{timestamp[0:4]}/{timestamp[4:6]}/{timestamp[6:8]}/png/epic_1b_{timestamp}.png'
+
     
     #photo_filename = os.path.join(download_dir, os.path.basename(photo_url))
     photo_filename = os.path.join(download_dir, 'DSCOVR.png')
