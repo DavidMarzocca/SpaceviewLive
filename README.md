@@ -25,7 +25,7 @@ Dependencies
 ----------------
 
 The script needs:
-> - Python (tested on v.2.7)
+> - Python (tested on v.3.9)
 > - Crone
 
 Both should come by default in all Unix systems (Linux and Mac).
